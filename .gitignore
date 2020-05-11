@@ -1,0 +1,2 @@
+# exclude all sql files (many of them are just too big to upload)
+*.sql

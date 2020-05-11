@@ -1,0 +1,208 @@
+-- MTGSQLive Output File
+-- (2020-05-05 16:07:32)
+-- MTGJSON Version: 4.6.3+20200504
+
+START TRANSACTION;
+-- SET names 'utf8mb4';
+
+CREATE TYPE enum_one as ENUM('core', 'expansion', 'masters', 'memorabilia', 'starter', 'archenemy', 'box', 'draft_innovation', 'commander', 'funny', 'duel_deck', 'from_the_vault', 'masterpiece', 'promo', 'premium_deck', 'planechase', 'token', 'vanguard', 'treasure_chest', 'spellbook');
+
+CREATE TYPE enum_two as ENUM('nyxtouched', 'miracle', 'legendary', 'devoid', 'draft', 'sunmoondfc', 'extendedart', 'showcase', 'inverted', 'mooneldrazidfc', 'tombstone', 'companion', 'originpwdfc', 'colorshifted', 'compasslanddfc', 'waxingandwaningmoondfc', 'nyxborn');
+
+CREATE TYPE enum_three as ENUM('2003', '1993', '2015', '1997', 'future');
+
+CREATE TYPE enum_four as ENUM('normal', 'aftermath', 'split', 'flip', 'leveler', 'saga', 'vanguard', 'transform', 'adventure', 'meld', 'scheme', 'planar', 'host', 'augment');
+
+CREATE TYPE enum_five as ENUM('rare', 'uncommon', 'common', 'mythic');
+
+CREATE TYPE enum_six as ENUM('black', 'silver', 'gold');
+
+CREATE TYPE enum_seven as ENUM('normal', 'double_faced_token', 'emblem');
+
+CREATE TYPE enum_eight as ENUM('mtgo', 'mtgoFoil', 'paper', 'paperFoil');
+
+CREATE TYPE enum_nine as ENUM('commander', 'duel', 'legacy', 'modern', 'vintage', 'pauper', 'penny', 'historic', 'pioneer', 'brawl', 'future', 'standard', 'oldschool');
+
+CREATE TYPE enum_ten as ENUM('Legal', 'Banned', 'Restricted');
+
+CREATE TYPE enum_eleven as ENUM('German', 'Spanish', 'French', 'Italian', 'Japanese', 'Portuguese (Brazil)', 'Russian', 'Chinese Simplified', 'Korean', 'Chinese Traditional', 'Sanskrit', 'Hebrew', 'Ancient Greek', 'Latin', 'Arabic');
+
+CREATE TYPE enum_twelve as ENUM('Chinese Simplified', 'Chinese Traditional', 'French', 'German', 'Italian', 'Japanese', 'Korean', 'Portuguese (Brazil)', 'Russian', 'Spanish');
+
+CREATE TYPE enum_thirteen as ENUM('black', 'white', 'borderless', 'silver', 'gold');
+
+CREATE TABLE sets (
+    id SERIAL PRIMARY KEY,
+    baseSetSize INTEGER,
+    block TEXT,
+    boosterV3 TEXT,
+    code VARCHAR(8) UNIQUE NOT NULL,
+    codeV3 TEXT,
+    isFoilOnly SMALLINT NOT NULL DEFAULT 0,
+    isForeignOnly SMALLINT NOT NULL DEFAULT 0,
+    isOnlineOnly SMALLINT NOT NULL DEFAULT 0,
+    isPartialPreview SMALLINT NOT NULL DEFAULT 0,
+    keyruneCode TEXT,
+    mcmId INTEGER,
+    mcmName TEXT,
+    meta TEXT,
+    mtgoCode TEXT,
+    name TEXT,
+    parentCode TEXT,
+    releaseDate DATE,
+    tcgplayerGroupId INTEGER,
+    totalSetSize INTEGER,
+    type enum_one
+);
+
+CREATE TABLE cards (
+    id SERIAL PRIMARY KEY,
+    artist TEXT,
+    asciiName TEXT,
+    borderColor enum_thirteen,
+    colorIdentity TEXT,
+    colorIndicator TEXT,
+    colors TEXT,
+    convertedManaCost FLOAT,
+    duelDeck TEXT,
+    edhrecRank INTEGER,
+    faceConvertedManaCost FLOAT,
+    flavorName TEXT,
+    flavorText TEXT,
+    frameEffect enum_two,
+    frameEffects TEXT,
+    frameVersion enum_three,
+    hand TEXT,
+    hasFoil SMALLINT NOT NULL DEFAULT 0,
+    hasNoDeckLimit SMALLINT NOT NULL DEFAULT 0,
+    hasNonFoil SMALLINT NOT NULL DEFAULT 0,
+    isAlternative SMALLINT NOT NULL DEFAULT 0,
+    isArena SMALLINT NOT NULL DEFAULT 0,
+    isBuyABox SMALLINT NOT NULL DEFAULT 0,
+    isDateStamped SMALLINT NOT NULL DEFAULT 0,
+    isFullArt SMALLINT NOT NULL DEFAULT 0,
+    isMtgo SMALLINT NOT NULL DEFAULT 0,
+    isOnlineOnly SMALLINT NOT NULL DEFAULT 0,
+    isOversized SMALLINT NOT NULL DEFAULT 0,
+    isPaper SMALLINT NOT NULL DEFAULT 0,
+    isPromo SMALLINT NOT NULL DEFAULT 0,
+    isReprint SMALLINT NOT NULL DEFAULT 0,
+    isReserved SMALLINT NOT NULL DEFAULT 0,
+    isStarter SMALLINT NOT NULL DEFAULT 0,
+    isStorySpotlight SMALLINT NOT NULL DEFAULT 0,
+    isTextless SMALLINT NOT NULL DEFAULT 0,
+    isTimeshifted SMALLINT NOT NULL DEFAULT 0,
+    layout enum_four,
+    leadershipSkills TEXT,
+    life TEXT,
+    loyalty TEXT,
+    manaCost TEXT,
+    mcmId INTEGER,
+    mcmMetaId INTEGER,
+    mtgArenaId INTEGER,
+    mtgoFoilId INTEGER,
+    mtgoId INTEGER,
+    multiverseId INTEGER,
+    name TEXT,
+    names TEXT,
+    number TEXT,
+    originalText TEXT,
+    originalType TEXT,
+    otherFaceIds TEXT,
+    power TEXT,
+    printings TEXT,
+    purchaseUrls TEXT,
+    rarity enum_five,
+    scryfallId TEXT,
+    scryfallIllustrationId TEXT,
+    scryfallOracleId TEXT,
+    setCode VARCHAR(8) NOT NULL,
+    FOREIGN KEY (setCode) REFERENCES sets(code) ON UPDATE CASCADE ON DELETE CASCADE,
+    side TEXT,
+    subtypes TEXT,
+    supertypes TEXT,
+    tcgplayerProductId INTEGER,
+    text TEXT,
+    toughness TEXT,
+    type TEXT,
+    types TEXT,
+    uuid CHAR(36) UNIQUE NOT NULL,
+    variations TEXT,
+    watermark TEXT
+);
+
+CREATE TABLE tokens (
+    id SERIAL PRIMARY KEY,
+    artist TEXT,
+    borderColor enum_six,
+    colorIdentity TEXT,
+    colors TEXT,
+    isOnlineOnly SMALLINT NOT NULL DEFAULT 0,
+    layout enum_seven,
+    name TEXT,
+    names TEXT,
+    number TEXT,
+    power TEXT,
+    reverseRelated TEXT,
+    scryfallId TEXT,
+    scryfallIllustrationId TEXT,
+    scryfallOracleId TEXT,
+    setCode VARCHAR(8) NOT NULL,
+    FOREIGN KEY (setCode) REFERENCES sets(code) ON UPDATE CASCADE ON DELETE CASCADE,
+    side TEXT,
+    subtypes TEXT,
+    supertypes TEXT,
+    text TEXT,
+    toughness TEXT,
+    type TEXT,
+    types TEXT,
+    uuid CHAR(36) NOT NULL,
+    watermark TEXT
+);
+
+CREATE TABLE prices (
+    id SERIAL PRIMARY KEY,
+    date DATE,
+    price DECIMAL(8,2),
+    type enum_eight,
+    uuid CHAR(36) NOT NULL,
+    FOREIGN KEY (uuid) REFERENCES cards(uuid) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE rulings (
+    id SERIAL PRIMARY KEY,
+    date DATE,
+    text TEXT,
+    uuid CHAR(36) NOT NULL,
+    FOREIGN KEY (uuid) REFERENCES cards(uuid) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE legalities (
+    id SERIAL PRIMARY KEY,
+    format enum_nine,
+    status enum_ten,
+    uuid CHAR(36) NOT NULL,
+    FOREIGN KEY (uuid) REFERENCES cards(uuid) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE foreign_data (
+    id SERIAL PRIMARY KEY,
+    flavorText TEXT,
+    language enum_eleven,
+    multiverseId INTEGER,
+    name TEXT,
+    text TEXT,
+    type TEXT,
+    uuid CHAR(36) NOT NULL,
+    FOREIGN KEY (uuid) REFERENCES cards(uuid) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE set_translations (
+    id SERIAL PRIMARY KEY,
+    language enum_twelve,
+    setCode VARCHAR(8) NOT NULL,
+    FOREIGN KEY (setCode) REFERENCES sets(code) ON UPDATE CASCADE ON DELETE CASCADE,
+    translation TEXT
+);
+
+COMMIT;
