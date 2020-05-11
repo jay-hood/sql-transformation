@@ -1,0 +1,8 @@
+Table			Index
+cards			setCode
+tokens			setCode
+prices			uuid
+rulings			uuid
+legalities		uuid
+foreign_data		uuid
+set_translations	setCode
